@@ -1,3 +1,4 @@
+using AspNetCore_SPA.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCore_SPA.Persistence
@@ -8,5 +9,7 @@ namespace AspNetCore_SPA.Persistence
         {
             
         }
+
+        public DbSet<Make> Makes  { get; set; }
     }
 }
