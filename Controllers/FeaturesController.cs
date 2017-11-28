@@ -1,0 +1,31 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AspNetCore_SPA.Controllers.Resources;
+using AspNetCore_SPA.Models;
+using AspNetCore_SPA.Persistence;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace AspNetCore_SPA.Controllers
+{
+    public class FeaturesController : Controller
+    {
+        private readonly MyDbContext context;
+        private readonly IMapper mapper;
+
+        public FeaturesController(MyDbContext context, IMapper mapper)
+        {
+            this.mapper = mapper;
+            this.context = context;
+        }
+
+        [HttpGet("/api/features")]
+        public async Task<List<FeatureResource>> GetFeatures()
+        {
+            var features = await context.Features.ToListAsync();;
+
+            return mapper.Map<List<Feature>, List<FeatureResource>>(features);
+        }
+    }
+}
