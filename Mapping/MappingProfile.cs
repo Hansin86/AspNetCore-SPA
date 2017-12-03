@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AspNetCore_SPA.Controllers.Resources;
-using AspNetCore_SPA.Models;
+using AspNetCore_SPA.Core.Models;
 using AutoMapper;
 
 namespace AspNetCore_SPA.Mapping

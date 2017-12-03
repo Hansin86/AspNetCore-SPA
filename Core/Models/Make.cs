@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace AspNetCore_SPA.Models
+namespace AspNetCore_SPA.Core.Models
 {
     public class Make
     {

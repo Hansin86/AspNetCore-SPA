@@ -1,4 +1,4 @@
-using AspNetCore_SPA.Models;
+using AspNetCore_SPA.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCore_SPA.Persistence

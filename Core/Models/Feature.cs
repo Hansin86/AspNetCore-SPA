@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AspNetCore_SPA.Models
+namespace AspNetCore_SPA.Core.Models
 {
     [Table("Features")]
     public class Feature

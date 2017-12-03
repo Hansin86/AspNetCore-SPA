@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AspNetCore_SPA.Controllers.Resources;
-using AspNetCore_SPA.Models;
+using AspNetCore_SPA.Core.Models;
 using AspNetCore_SPA.Persistence;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +23,7 @@ namespace AspNetCore_SPA.Controllers
         [HttpGet("/api/features")]
         public async Task<List<KeyValuePairResource>> GetFeatures()
         {
-            var features = await context.Features.ToListAsync();;
+            var features = await context.Features.ToListAsync();
 
             return mapper.Map<List<Feature>, List<KeyValuePairResource>>(features);
         }
