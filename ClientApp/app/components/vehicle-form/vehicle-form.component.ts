@@ -35,7 +35,7 @@ export class VehicleFormComponent implements OnInit {
     private vehicleService: VehicleService,
     private toastyService: ToastyService) {
       route.params.subscribe(p => {
-        this.vehicle.id = +p['id']; //+ converts to the number
+        this.vehicle.id = +p['id'] || 0; //+ converts to the number
       });
     }
 
@@ -91,24 +91,17 @@ export class VehicleFormComponent implements OnInit {
   }
 
   submit() {
-    if(this.vehicle.id) {
-      this.vehicleService.update(this.vehicle)
-        .subscribe(x => {
-          this.toastyService.success({
-            title: 'Success whatever',
-            msg: 'The vehicle was suscessfully update! Yahoo!',
-            theme: 'boostrap',
-            showClose: true,
-            timeout: 5000
-          });
-        });
-    }
-    else {
-      this.vehicleService.create(this.vehicle)
-      .subscribe(
-        x => console.log(x)
-      );
-    }
+    var result$ =(this.vehicle.id) ? this.vehicleService.update(this.vehicle) : this.vehicleService.create(this.vehicle);
+    result$.subscribe(vehicle => {
+      this.toastyService.success({
+        title: 'Success whatever',
+        msg: 'The vehicle was suscessfully update! Yahoo!',
+        theme: 'boostrap',
+        showClose: true,
+        timeout: 5000
+      });
+      this.router.navigate(['/vehicles/', vehicle.id]);
+    });    
   }
 
   delete() {

@@ -25,6 +25,7 @@ const nonTreeShakableModules = [
     'jquery',
     'raven-js',
     'underscore',
+    'font-awesome/css/font-awesome.css',
 ];
 const allModules = treeShakableModules.concat(nonTreeShakableModules);
 

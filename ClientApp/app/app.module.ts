@@ -16,6 +16,9 @@ import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
+import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
+import { PaginationComponent } from './components/shared/pagination.component';
+import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
 
 Raven
     .config('https://868256a8c08c4ba688a11e95dd36c925@sentry.io/254887')
@@ -28,7 +31,10 @@ Raven
         CounterComponent,
         FetchDataComponent,
         HomeComponent,
-        VehicleFormComponent
+        VehicleFormComponent,
+        VehicleListComponent,
+        PaginationComponent,
+        ViewVehicleComponent
     ],
     imports: [
         CommonModule,
@@ -36,9 +42,11 @@ Raven
         FormsModule,
         ToastyModule.forRoot(),
         RouterModule.forRoot([
-            { path: '', redirectTo: 'home', pathMatch: 'full' },
+            { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
             { path: 'vehicles/new', component: VehicleFormComponent },
-            { path: 'vehicles/:id', component: VehicleFormComponent },
+            { path: 'vehicles/new/:id', component: VehicleFormComponent },
+            { path: 'vehicles/:id', component: ViewVehicleComponent },
+            { path: 'vehicles', component: VehicleListComponent },
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },

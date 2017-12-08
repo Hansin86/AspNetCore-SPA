@@ -9,6 +9,7 @@ namespace AspNetCore_SPA.Persistence
         public DbSet<Feature> Features { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Model> Models { get; set; }
+        public DbSet<Photo> Photos { get; set; }
 
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {

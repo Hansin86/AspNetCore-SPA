@@ -11,6 +11,8 @@ namespace AspNetCore_SPA.Mapping
         public MappingProfile()
         {
             // Domain to API Resource
+            CreateMap<Photo, PhotoResource>();
+            CreateMap(typeof(QueryResult<>), typeof(QueryResultResource<>)); //this is the mapping of generic vales, that's why we map this way
             CreateMap<Make, MakeResource>();
             CreateMap<Make, KeyValuePairResource>();
             CreateMap<Model, KeyValuePairResource>();
@@ -27,6 +29,7 @@ namespace AspNetCore_SPA.Mapping
                     v.Features.Select(vf => new KeyValuePairResource { Id = vf.Feature.Id, Name = vf.Feature.Name })));
 
             // API Resource to Domain
+            CreateMap<VehicleQueryResource, VehicleQuery>();
             CreateMap<SaveVehicleResource, Vehicle>()
                 .ForMember(v => v.Id, opt => opt.Ignore())
                 .ForMember(v => v.ContactName, opt => opt.MapFrom(vr => vr.Contact.Name))

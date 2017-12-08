@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AspNetCore_SPA.Controllers.Resources;
 using AspNetCore_SPA.Core;
@@ -108,6 +109,18 @@ namespace AspNetCore_SPA.Controllers
             var vehicleResource = mapper.Map<Vehicle, VehicleResource>(vehicle);
 
             return Ok(vehicleResource);
+        }
+
+        [HttpGet]
+        public async Task<QueryResultResource<VehicleResource>> GetVehicles(VehicleQueryResource filterResource)
+        {
+            var filter = mapper.Map<VehicleQueryResource, VehicleQuery>(filterResource);
+            var queryResult = await repository.GetVehicles(filter);
+
+            return mapper.Map<QueryResult<Vehicle>, QueryResultResource<VehicleResource>>(queryResult);
+
+            //before changing return type
+            //return mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleResource>>(vehicles);
         }
     }
 }
