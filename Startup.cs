@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using AspNetCore_SPA.Core;
+using AspNetCore_SPA.Core.Models;
 
 namespace AspNetCore_SPA
 {
@@ -37,6 +38,7 @@ namespace AspNetCore_SPA
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
             services.AddAutoMapper();
 
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));

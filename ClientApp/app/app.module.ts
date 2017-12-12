@@ -1,3 +1,4 @@
+import { PhotoService } from './services/photo.service';
 import * as Raven from 'raven-js';
 import { AppErrorHandler } from './app.error-handler';
 import { VehicleService } from './services/vehicle.service';
@@ -55,7 +56,8 @@ Raven
     ],
     providers: [
         { provide: ErrorHandler, useClass: AppErrorHandler},
-        VehicleService
+        VehicleService,
+        PhotoService
     ]
 })
 export class AppModuleShared {
