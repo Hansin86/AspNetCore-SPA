@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,15 +20,21 @@ namespace AspNetCore_SPA.Controllers
     {
         private readonly IHostingEnvironment host;
         private readonly IVehicleRepository repository;
+        private readonly IPhotoRepository photoRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly PhotoSettings photoSettings;
         private readonly IMapper mapper;
-        public PhotosController(IHostingEnvironment host, IVehicleRepository repository, IUnitOfWork unitOfWork, IMapper mapper, IOptionsSnapshot<PhotoSettings> options)
+        public PhotosController(
+            IHostingEnvironment host, 
+            IVehicleRepository repository, 
+            IPhotoRepository photoRepository,
+            IUnitOfWork unitOfWork, IMapper mapper, IOptionsSnapshot<PhotoSettings> options)
         {
             this.photoSettings = options.Value;
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
             this.repository = repository;
+            this.photoRepository = photoRepository;
             this.host = host;
         }
 
@@ -72,6 +79,14 @@ namespace AspNetCore_SPA.Controllers
             await unitOfWork.CompleteAsync();
 
             return Ok(mapper.Map<Photo, PhotoResource>(photo));
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<PhotoResource>> GetPhotos(int vehicleId)
+        {
+            var photos = await photoRepository.GetPhotos(vehicleId);
+
+            return mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(photos);
         }
     }
 }

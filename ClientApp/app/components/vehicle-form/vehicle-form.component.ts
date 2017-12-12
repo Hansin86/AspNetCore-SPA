@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastyService } from 'ng2-toasty';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/Observable/forkJoin';
+import 'rxjs/Rx';
 import { SaveVehicle, Vehicle } from '../../models/vehicle';
 
 @Component({
