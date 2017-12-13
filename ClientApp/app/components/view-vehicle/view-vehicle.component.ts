@@ -1,3 +1,4 @@
+import { ProgressService } from './../../services/progress.service';
 import { PhotoService } from './../../services/photo.service';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -20,6 +21,7 @@ export class ViewVehicleComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toasty: ToastyService,
+    private progressService: ProgressService,
     private photoService: PhotoService,
     private vehicleService: VehicleService) {
 
@@ -58,6 +60,9 @@ export class ViewVehicleComponent implements OnInit {
 
   uploadPhoto() {
     var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
+
+    this.progressService.uploadProgress
+      .subscribe(progress => console.log(progress));
 
     if(nativeElement.files)
       this.photoService.upload(this.vehicleId, nativeElement.files[0])
