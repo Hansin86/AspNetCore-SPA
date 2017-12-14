@@ -1,6 +1,6 @@
 import { ProgressService } from './../../services/progress.service';
 import { PhotoService } from './../../services/photo.service';
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { VehicleService } from '../../services/vehicle.service';
@@ -16,8 +16,10 @@ export class ViewVehicleComponent implements OnInit {
   vehicle: any;
   vehicleId: number;
   photos: any[];
+  progress: any;
 
   constructor(
+    private zone: NgZone,
     private route: ActivatedRoute,
     private router: Router,
     private toasty: ToastyService,
@@ -59,15 +61,38 @@ export class ViewVehicleComponent implements OnInit {
   }
 
   uploadPhoto() {
+    this.progressService.startTracking()
+      .subscribe(progress => {
+        console.log(progress);
+        this.zone.run(() => {
+          this.progress = progress;
+        });        
+      },
+      undefined,
+      () => { this.progress = null });
+
     var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
-
-    this.progressService.uploadProgress
-      .subscribe(progress => console.log(progress));
-
+    var file;
     if(nativeElement.files)
-      this.photoService.upload(this.vehicleId, nativeElement.files[0])
+      file = nativeElement.files[0];
+
+    nativeElement.value = '';    
+
+    if(file)
+      this.photoService.upload(this.vehicleId, file)
         .subscribe(photo => {
           this.photos.push(photo);
-        });
+        },
+      err => {
+        if (typeof(window) !== 'undefined') {
+          this.toasty.error({
+              title: 'Error',
+              msg: err.text(),
+              theme: 'bootstrap',
+              showClose: true,
+              timeout: 5000
+          });
+        }
+      });
   }
 }
