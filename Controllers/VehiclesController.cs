@@ -6,6 +6,7 @@ using AspNetCore_SPA.Core;
 using AspNetCore_SPA.Core.Models;
 using AspNetCore_SPA.Persistence;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,7 @@ namespace AspNetCore_SPA.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateVehicle([FromBody]SaveVehicleResource vehicleResource)
         {
             if (!ModelState.IsValid)            
@@ -54,6 +56,7 @@ namespace AspNetCore_SPA.Controllers
         }
 
         [HttpPut("{id}")] //name of parameter and rout must be the same
+        [Authorize]
         public async Task<IActionResult> UpdateVehicle(int id, [FromBody]SaveVehicleResource vehicleResource)
         {
             if (!ModelState.IsValid)
@@ -85,6 +88,7 @@ namespace AspNetCore_SPA.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
             var vehicle = await repository.GetVehicle(id, includeRelated: false);

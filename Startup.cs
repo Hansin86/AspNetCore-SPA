@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using AspNetCore_SPA.Core;
 using AspNetCore_SPA.Core.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace AspNetCore_SPA
 {
@@ -48,6 +49,18 @@ namespace AspNetCore_SPA
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddMvc();
+
+            // 1. Add Authentication Services
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = "https://aspnetcorespaudemy.eu.auth0.com/";
+                options.Audience = "https://api.aspcorespa.com";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +80,9 @@ namespace AspNetCore_SPA
             }
 
             app.UseStaticFiles();
+
+            // 2. Enable authentication middleware
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

@@ -1,3 +1,4 @@
+import { AuthService } from './services/auth.service';
 import { BrowserXhrWithProgress, ProgressService } from './services/progress.service';
 import { PhotoService } from './services/photo.service';
 import * as Raven from 'raven-js';
@@ -21,6 +22,7 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { PaginationComponent } from './components/shared/pagination.component';
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
+import { CallbackComponent } from './components/callback/callback.component';
 
 Raven
     .config('https://868256a8c08c4ba688a11e95dd36c925@sentry.io/254887')
@@ -36,7 +38,8 @@ Raven
         VehicleFormComponent,
         VehicleListComponent,
         PaginationComponent,
-        ViewVehicleComponent
+        ViewVehicleComponent,
+        CallbackComponent
     ],
     imports: [
         CommonModule,
@@ -45,10 +48,11 @@ Raven
         ToastyModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
+            { path: 'callback', component: CallbackComponent },
             { path: 'vehicles/new', component: VehicleFormComponent },
             { path: 'vehicles/new/:id', component: VehicleFormComponent },
             { path: 'vehicles/:id', component: ViewVehicleComponent },
-            { path: 'vehicles', component: VehicleListComponent },
+            { path: 'vehicles', component: VehicleListComponent },            
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
@@ -60,7 +64,9 @@ Raven
         { provide: BrowserXhr, useClass: BrowserXhrWithProgress},
         VehicleService,
         PhotoService,
-        ProgressService
+        ProgressService,
+        AuthService
+        
     ]
 })
 export class AppModuleShared {

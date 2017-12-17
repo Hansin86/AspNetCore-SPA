@@ -4,6 +4,7 @@ using AspNetCore_SPA.Controllers.Resources;
 using AspNetCore_SPA.Core.Models;
 using AspNetCore_SPA.Persistence;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

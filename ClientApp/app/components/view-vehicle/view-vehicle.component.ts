@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { ProgressService } from './../../services/progress.service';
 import { PhotoService } from './../../services/photo.service';
 import { Component, OnInit, ElementRef, NgZone } from '@angular/core';
@@ -23,6 +24,7 @@ export class ViewVehicleComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toasty: ToastyService,
+    private auth: AuthService,
     private progressService: ProgressService,
     private photoService: PhotoService,
     private vehicleService: VehicleService) {
@@ -50,6 +52,10 @@ export class ViewVehicleComponent implements OnInit {
           }        
         });
   }
+
+testAuth() {
+  this.auth.login();
+}
 
   delete() {
     if(confirm("Are you sure?")) {
