@@ -48,18 +48,12 @@ namespace AspNetCore_SPA.Persistence
             var result = new QueryResult<Vehicle>();
 
             var query = context.Vehicles
-                .Include(v => v.Features)
-                    .ThenInclude(vf => vf.Feature)
                 .Include(v => v.Model)
                     .ThenInclude(m => m.Make)
                 .AsQueryable();
 
             //filtering
-            if(queryObject.MakeId.HasValue)
-                query = query.Where(v => v.Model.MakeId == queryObject.MakeId.Value);
-
-            if(queryObject.ModelId.HasValue)
-                query = query.Where(v => v.Model.Id == queryObject.ModelId.Value);
+            query = query.ApplyFiltering(queryObject);
 
             //string str; we need to map string to expression
             //Expression<Func<Vehicle, object>> exp; for this mapping we are using a Dictionary
@@ -69,7 +63,6 @@ namespace AspNetCore_SPA.Persistence
                 ["model"] = v => v.Model.Name,
                 ["contactName"] = v => v.ContactName
             };
-
             //sorting
             query = query.ApplyOrdering(queryObject, columnsMap);
 

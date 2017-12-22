@@ -26,6 +26,8 @@ namespace AspNetCore_SPA.Controllers
         }
 
         [HttpPost]
+        //Restrict access to the API for user with particular role
+        //[Authorize(Policies.RequireAdminRole)] //the same string as in Startup class (RequireAdminRole)
         [Authorize]
         public async Task<IActionResult> CreateVehicle([FromBody]SaveVehicleResource vehicleResource)
         {

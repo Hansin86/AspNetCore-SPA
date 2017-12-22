@@ -21,18 +21,20 @@ namespace AspNetCore_SPA.Controllers
         private readonly IHostingEnvironment host;
         private readonly IVehicleRepository repository;
         private readonly IPhotoRepository photoRepository;
-        private readonly IUnitOfWork unitOfWork;
         private readonly PhotoSettings photoSettings;
         private readonly IMapper mapper;
+        private readonly IPhotoService photoService;
+
         public PhotosController(
             IHostingEnvironment host, 
             IVehicleRepository repository, 
             IPhotoRepository photoRepository,
-            IUnitOfWork unitOfWork, IMapper mapper, IOptionsSnapshot<PhotoSettings> options)
+            IMapper mapper, IOptionsSnapshot<PhotoSettings> options,
+            IPhotoService photoService)
         {
             this.photoSettings = options.Value;
             this.mapper = mapper;
-            this.unitOfWork = unitOfWork;
+            this.photoService = photoService;
             this.repository = repository;
             this.photoRepository = photoRepository;
             this.host = host;
@@ -59,24 +61,7 @@ namespace AspNetCore_SPA.Controllers
                 return BadRequest("Invalid file type.");
 
             var uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads"); //returns path on the hosting machine
-
-            if (!Directory.Exists(uploadsFolderPath))
-                Directory.CreateDirectory(uploadsFolderPath);
-
-            //always generate new file name, in case someone changes file name in request to: ../../../windows/system/asd.dll
-            //simplest solution is GUID
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var filePath = Path.Combine(uploadsFolderPath, fileName);
-
-            //read input file and store it
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            var photo = new Photo { FileName = fileName };
-            vehicle.Photos.Add(photo);
-            await unitOfWork.CompleteAsync();
+            var photo = await photoService.UploadPhoto(vehicle, file, uploadsFolderPath);
 
             return Ok(mapper.Map<Photo, PhotoResource>(photo));
         }

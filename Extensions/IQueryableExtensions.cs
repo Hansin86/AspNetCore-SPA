@@ -8,6 +8,16 @@ namespace AspNetCore_SPA.Extensions
 {
     public static class IQueryableExtensions
     {
+        public static IQueryable<Vehicle> ApplyFiltering(this IQueryable<Vehicle> query, VehicleQuery queryObject)
+        {
+            if(queryObject.MakeId.HasValue)
+                query = query.Where(v => v.Model.MakeId == queryObject.MakeId.Value);
+
+            if(queryObject.ModelId.HasValue)
+                query = query.Where(v => v.Model.Id == queryObject.ModelId.Value);
+
+            return query;
+        }
         public static IQueryable<T> ApplyOrdering<T>(this IQueryable<T> query, IQueryObject queryObject, Dictionary<string, Expression<Func<T, object>>> columnsMap)
         {
             //be sure to include only existing column names 

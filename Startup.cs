@@ -13,6 +13,7 @@ using AutoMapper;
 using AspNetCore_SPA.Core;
 using AspNetCore_SPA.Core.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using AspNetCore_SPA.Controllers;
 
 namespace AspNetCore_SPA
 {
@@ -28,8 +29,12 @@ namespace AspNetCore_SPA
             var builder = new ConfigurationBuilder()
                             .SetBasePath(env.ContentRootPath)
                             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                            .AddEnvironmentVariables();
+                            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+            if (env.IsDevelopment())
+                builder = builder.AddUserSecrets<Startup>();
+                            
+            builder = builder.AddEnvironmentVariables();
 
             Configuration = builder.Build();
         }
@@ -47,6 +52,15 @@ namespace AspNetCore_SPA
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IPhotoService, PhotoService>();
+
+            //In future, depending on environment (DEV, PROD), we want to use different storage, DEV = local file, PROD = Azure ect.
+            services.AddTransient<IPhotoStorage, FileSystemPhotoStorage>();
+
+            services.AddAuthorization(options => {
+                //policy.RequireClaim("https://aspcorespa.core/roles"), "Admin" comes from Auth0 rules, when setting accessToken
+                options.AddPolicy(Policies.RequireAdminRole, policy => policy.RequireClaim("https://aspcorespa.core/roles", "Admin"));
+            });
 
             services.AddMvc();
 

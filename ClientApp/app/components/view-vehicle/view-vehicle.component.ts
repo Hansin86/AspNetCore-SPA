@@ -1,16 +1,20 @@
 import { AuthService } from './../../services/auth.service';
-import { ProgressService } from './../../services/progress.service';
+import { ProgressService, BrowserXhrWithProgress } from './../../services/progress.service';
 import { PhotoService } from './../../services/photo.service';
 import { Component, OnInit, ElementRef, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { VehicleService } from '../../services/vehicle.service';
 import { ViewChild } from '@angular/core';
+import { BrowserXhr } from '@angular/http';
 
 @Component({
-  selector: 'app-view-vehicle',
   templateUrl: './view-vehicle.component.html',
-  styleUrls: ['./view-vehicle.component.css']
+  styleUrls: ['./view-vehicle.component.css'],
+  providers: [
+    { provide: BrowserXhr, useClass: BrowserXhrWithProgress},
+    ProgressService
+  ]
 })
 export class ViewVehicleComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef; //fileInput is the name of template variable from the view
